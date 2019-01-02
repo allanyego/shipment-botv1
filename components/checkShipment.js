@@ -33,12 +33,20 @@ module.exports = {
 		supportedActions: [
 			"gotShipment",
 			"noShipment",
+			"idErr",
 			"err",
 		]
 	}),
 
 	invoke: (conversation, done) => {
 		const { shipmentId } = conversation.properties();
+
+		request({
+			uri: uri,
+			qs: {
+				id: shipmentId
+			}
+		}, callback);
 
 		function callback(err, res, body) {
 			if (err) {
@@ -48,34 +56,34 @@ module.exports = {
 				let TrackingInformationResponse = body.TrackingInformationResponse;
 
 				if (TrackingInformationResponse &&
+					TrackingInformationResponse.compositeFault) {
+					let faults = TrackingInformationResponse.compositeFault.faults;
+					faults.forEach(f => {
+						// Check for invalidIdentifier fault
+						if (f.faultCode === "invalidIdentifier") {
+							conversation.variable("reply", f.explanationText);
+							conversation.transition("idErr");
+						}
+					});
+				} else if (TrackingInformationResponse &&
 						TrackingInformationResponse.shipments){
 					let shipments = TrackingInformationResponse.shipments;
 
 					if (shipments.length === 0) {
-						conversation.variable("reply", "No shipment by that " +
-						"ID");
-						conversation.transition();
+						conversation.transition("noShipment");
 					} else {
 						let deliveryDate = shipments[0].deliveryDate;
 						conversation.variable("reply", new Date(deliveryDate));
-						conversation.transition();
+						conversation.transition("gotShipment");
 					}
 				} else {
 					conversation.transition("err");
 				}
-				conversation.transition("gotShipment");
 			} else {
 				conversation.transition("err");
 			}
 
 			done();
 		}
-
-		request({
-			uri: uri,
-			qs: {
-				id: shipmentId
-			}
-		}, callback);
 	}
 };
