@@ -73,7 +73,9 @@ module.exports = {
 						conversation.transition("noShipment");
 					} else {
 						let deliveryDate = shipments[0].deliveryDate;
-						conversation.variable("reply", new Date(deliveryDate));
+						let reply = constructReply(new Date(deliveryDate));
+
+						conversation.variable("reply", reply);
 						conversation.transition("gotShipment");
 					}
 				} else {
