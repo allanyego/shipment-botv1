@@ -1,0 +1,25 @@
+{
+  "name": "shipment-bot-v1",
+  "version": "1.0.0",
+  "description": "A custom component for BotSuppy trial.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@oracle/bots-node-sdk": "^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yegow/shipment-botv1.git"
+  },
+  "author": "Yego",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yegow/shipment-botv1/issues"
+  },
+  "homepage": "https://github.com/yegow/shipment-botv1#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}
