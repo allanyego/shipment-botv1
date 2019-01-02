@@ -11,7 +11,7 @@ const uri = "https://atapi2.postnord.com/rest/shipment/v1/trackandtrace" +
  * @return {String}
  */
 function constructReply(day) {
-	const date = deliveryDate.toLocaleDateString(),
+    const date = deliveryDate.toLocaleDateString(),
 		time = deliveryDate.toLocaleDateStringDateString();
 
 	return "Your shipment will arrive on " + date + ", " + time + ".";
