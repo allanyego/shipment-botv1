@@ -1,25 +1,20 @@
 {
-  "name": "shipment-bot-v1",
+  "name": "shipment-botv1",
   "version": "1.0.0",
-  "description": "A custom component for BotSuppy trial.",
+  "description": "Oracle Bots Custom Component Package",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bots-node-sdk": "bots-node-sdk",
+    "help": "npm run bots-node-sdk -- --help",
+    "prepack": "npm run bots-node-sdk -- pack --dry-run",
+    "start": "npm run bots-node-sdk -- service ."
   },
-  "devDependencies": {
-    "@oracle/bots-node-sdk": "^2.1.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yegow/shipment-botv1.git"
-  },
-  "author": "Yego",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/yegow/shipment-botv1/issues"
-  },
-  "homepage": "https://github.com/yegow/shipment-botv1#readme",
+  "repository": {},
   "dependencies": {
     "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "@oracle/bots-node-sdk": "^2.1.3",
+    "express": "^4.16.3"
   }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-    components: {
-    	"Custom.CheckShipment": require("./components/checkShipment")
-    }
+  components: {
+    'Custom.CheckShipment': require('./components/Custom.CheckShipment')
+  }
 };
