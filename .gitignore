@@ -61,4 +61,8 @@ typings/
 .next
 
 # api keys and access tokens
+<<<<<<< HEAD
 confi/secret.js
+=======
+config/secret.js
+>>>>>>> b417abcd324f5495f5e9e438ae53c3637fd0330e
