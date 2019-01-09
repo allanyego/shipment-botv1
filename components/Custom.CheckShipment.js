@@ -3,8 +3,7 @@
 const request = require('request'),
   constructReply = require('../lib/constructReply'),
 
-  uri = "https://atapi2.postnord.com/rest/shipment/v1/trackandtrace" +
-  	"/findByIdentifier.json";
+  { uri, key } = require('../config/setupApi')('postnord');
 
 /**
  * Custom component to interact with the Track and Trace API
@@ -24,6 +23,7 @@ module.exports = {
 			'noShipment',
 			'idErr',
 			'err',
+			'shipmentStopped'
 		]
 	}),
 
@@ -34,14 +34,16 @@ module.exports = {
 			uri: uri,
 			qs: {
 				id: shipmentId,
-        locale: 'en',
-        apikey: require('../config/secret').postnordApiKey
+        		locale: 'en',
+        		apikey: key
 			}
 		}, callback);
 
 		function callback(err, res, body) {
 			if (err) {
-				conversation.transition('err');
+				// conversation.transition('err');
+				conversation.variable('reply', err.message);
+				conversation.transition('gotShipment');
 			} else if (body) {
 				body = JSON.parse(body);
 				let TrackingInformationResponse = body.TrackingInformationResponse;
@@ -64,10 +66,14 @@ module.exports = {
 						conversation.transition('noShipment');
 					} else {
 						let deliveryDate = shipments[0].deliveryDate;
-						let reply = constructReply(deliveryDate);
 
-						conversation.variable('reply', reply);
-						conversation.transition('gotShipment');
+						if (deliveryDate) {
+							conversation.variable('reply', constructReply(deliveryDate));
+							conversation.transition('gotShipment');
+						} else {
+							conversation.variable('reply', constructReply());
+							conversation.transition('shipmentStopped');
+						}
 					}
 				} else {
 					conversation.transition('err');
